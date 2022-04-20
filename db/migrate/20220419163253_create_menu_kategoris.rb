@@ -5,6 +5,8 @@ class CreateMenuKategoris < ActiveRecord::Migration[7.0]
       t.belongs_to :kategori
       
       t.timestamps
+
+      t.index [:menu_id, :kategori_id], unique: true
     end
   end
 end
