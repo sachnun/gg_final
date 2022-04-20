@@ -9,16 +9,15 @@ class MenusController < ApplicationController
     def show
         if Menu.exists?(params[:id]) then
             menu = Menu.find(params[:id])
-            kategoris = menu.kategori
 
             render json: {
                 message: "Menu ditemukan",
                 menu: menu,
-                kategoris: kategoris
+                kategoris: menu.kategori
             }
         else
             render json: {
-                error: "Menu tidak ditemukan"
+                message: "Menu tidak ditemukan",
             }
         end
     end 
@@ -27,9 +26,19 @@ class MenusController < ApplicationController
         menu = Menu.new(menu_params)
 
         if menu.save            
+
+            if kategori_params.present? then
+                menu.kategori.destroy_all
+                kategori_params.each do |kategori|
+                    kategori = Kategori.find_or_create_by(nama: kategori)
+                    menu.kategori << kategori
+                end
+            end
+            
             render json: {
                 message: "Menu berhasil ditambahkan",
-                menu: menu
+                menu: menu,
+                kategoris: menu.kategori
             }
         else
             render json: menu.errors, status: :unprocessable_entity
@@ -41,9 +50,19 @@ class MenusController < ApplicationController
             menu = Menu.find(params[:id])
 
             if menu.update(menu_params)
+
+                if kategori_params.present? then
+                    menu.kategori.destroy_all
+                    kategori_params.each do |kategori|
+                        kategori = Kategori.find_or_create_by(nama: kategori)
+                        menu.kategori << kategori
+                    end
+                end
+
                 render json: {
                     message: "Menu berhasil diperbarui",
-                    menu: menu
+                    menu: menu,
+                    kategoris: menu.kategori
                 }
             else
                 render json: menu.errors, status: :unprocessable_entity
@@ -65,13 +84,18 @@ class MenusController < ApplicationController
             }
         else
             render json: {
-                error: "Menu tidak ditemukan"
+                message: "Menu tidak ditemukan",
             }
         end
     end
 
     private
     def menu_params
-        params.permit(:nama, :harga, :deskripsi)
+        params.require(:menu).permit(:nama, :harga, :deskripsi)
+    end
+
+    private
+    def kategori_params
+        params.require(:kategoris)
     end
 end
