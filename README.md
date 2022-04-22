@@ -1,24 +1,39 @@
-# README
+# GG Final - Rails with SQLite3
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+API application created by using ruby on rails and sqlite3 database to store data
+and make it helpfull for the manage orders.
 
-Things you may want to cover:
 
-* Ruby version
+## Installation
 
-* System dependencies
+Run this command to your terminal:
 
-* Configuration
+```bash
+bundle install
+```
 
-* Database creation
+```bash
+bundle exec rails db:migrate
+```
 
-* Database initialization
+## Run the server
 
-* How to run the test suite
+Run this command to your terminal:
 
-* Services (job queues, cache servers, search engines, etc.)
+```bash
+bundle exec rails s -p 
+```
 
-* Deployment instructions
+or, if you using replit just click run button.
 
-* ...
+## Testing
+
+For testing with rspec run this command:
+
+```bash
+bundle exec rspec -fd
+```
+
+## Documentation
+
+.. coming soon
