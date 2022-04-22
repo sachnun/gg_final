@@ -104,6 +104,10 @@ next, sample url shortened path and parameters only.
 
 | Method  | URL Path                      | Parameter                                                           | Description       |
 | ------- | ----------------------------- | ------------------------------------------------------------------- | ----------------- |
-| GET     | `/api/report?filter=date`     | <ul><li>s = tanggal awal</li><li>e = tanggal akhir</li></ul>        | list order        |
-| GET     | `/api/report?filter=harga`    | <ul><li>s = harga minimal</li><li>e = harga maksimal</li></ul>      | detail order      |
-| GET     | `/api/report?filter=email`    | <ul><li>q = email</li></ul>                                         | detail order      |
+| GET     | `/api/report?filter=date`     | <ul><li>s = tanggal awal</li><li>e = tanggal akhir</li></ul>        | report by date    |
+| GET     | `/api/report?filter=harga`    | <ul><li>s = harga minimal</li><li>e = harga maksimal</li></ul>      | report by price   |
+| GET     | `/api/report?filter=email`    | <ul><li>q = email</li></ul>                                         | report by email   |
+
+**Unpaid Order**
+
+for order status below 5 pm today, it will automatically be changed to unpaid / canceled.
