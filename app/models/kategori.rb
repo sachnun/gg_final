@@ -1,4 +1,5 @@
 class Kategori < ApplicationRecord
-    has_many :menu_kategoris
-    has_many :menus, through: :menu_kategoris
+    validates :nama, presence: true
+
+    has_many :menus
 end

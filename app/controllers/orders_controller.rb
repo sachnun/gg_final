@@ -1,93 +1,75 @@
 class OrdersController < ApplicationController
-    def index
-        orders = Order.all
-        
-        order_detail = []
-        orders.each do |order|
-            order_detail << {
-                order: order,
-                total_order_menus: order.order_menus.count,
-                total_harga: order.order_menus.total_harga
-            }
-        end
+    before_action :set_order, only: [:show, :update, :destroy, :paid]
 
+    def index
         render json: {
             message: "Menampilkan semua order",
-            orders: order_detail
+            orders: Order.all
         }
-    end 
+    end
 
     def show
-        if Order.exists?(params[:id]) then
-            order = Order.find(params[:id])
-
-            render json: {
-                message: "Order ditemukan",
-                order: order,
-                order_menus: order.order_menus,
-                total_harga: order.order_menus.total_harga
-            }
-        else
-            render json: {
-                message: "Order tidak ditemukan",
-            }
-        end
-    end 
+        order_show(@order, "Order ditemukan")
+    end
 
     def create
-        order = Order.new(order_params)
+        @order = Order.new(order_params)
+        @order.order_at = Time.now
 
-        if order.save
-
-            # order_menus_params.each do |order_menu|
-            #     order_menu = OrderMenu.new()
-            #     order_menu.order = order
-            #     order_menu.menu = order_menu[:menu_id]
-            #     order_menu.porsi = order_menu[:porsi]
-            #     order_menu.harga = order_menu[:harga]
-            #     order_menu.save
-                
-            #     order.order_menus << order_menu
-            # end
-
-            render json: {
-                message: "Order berhasil ditambahkan",
-                order: order,
-                order_menus: order.order_menus,
-                total_harga: order.order_menus.total_harga
-            }
+        if @order.save
+            order_show(@order, "Order berhasil ditambahkan")
         else
-            render json: order.errors, status: :unprocessable_entity
+            order_error(@order)
         end
-    end 
+    end
 
     def update
-  
-    end 
-
-    def destroy
-        if Order.exists?(params[:id]) then
-            order = Order.find(params[:id])
-            order.order_menus.destroy_all
-            order.destroy
-
-            render json: {
-                message: "Order berhasil dihapus",
-            }
+        if @order.update(order_params) then
+            order_show(@order, "Order berhasil diupdate")
         else
-            render json: {
-                message: "Order tidak ditemukan",
-            }
+            order_error(@order)
         end
     end
 
-    private
-    def order_params
-        params.require(:order).permit(:email)
+    def destroy
+        if @order.destroy
+            order_show(@order, "Order berhasil dihapus")
+        else
+            order_error(@order)
+        end
+    end
+
+    def paid
+        @order.update(status: "paid")
+        order_show(@order, "Order berhasil dibayar")
     end
 
     private
-    def order_menus_params
-        params.require(:orders)
+
+    def set_order
+        begin
+            @order = Order.find(params[:id])
+        rescue ActiveRecord::RecordNotFound
+            render json: {
+                message: "Order tidak ditemukan"
+            },
+            status: :not_found
+        end
+    end
+
+    def order_params
+        params.permit(:email, :status)
+    end
+
+    def order_show(order, message)
+        render json: {
+            message: message,
+            order: order,
+            order_menus_total: order.order_menus.count
+        }
+    end
+
+    def order_error(order)
+        render json: order.errors, status: :unprocessable_entity
     end
 end

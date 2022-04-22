@@ -12,31 +12,27 @@
 
 ActiveRecord::Schema[7.0].define(version: 2022_04_19_171008) do
   create_table "kategoris", force: :cascade do |t|
-    t.string "nama", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "menu_kategoris", force: :cascade do |t|
-    t.integer "menu_id", null: false
-    t.integer "kategori_id", null: false
+    t.string "nama"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "menus", force: :cascade do |t|
-    t.string "nama", null: false
-    t.string "deskripsi"
-    t.float "harga", default: 0.0, null: false
+    t.string "nama"
+    t.text "deskripsi"
+    t.integer "harga"
+    t.integer "kategori_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["kategori_id"], name: "index_menus_on_kategori_id"
   end
 
   create_table "order_menus", force: :cascade do |t|
     t.integer "order_id"
     t.integer "menu_id"
-    t.integer "porsi", null: false
-    t.decimal "harga", null: false
+    t.integer "porsi", default: 1
+    t.integer "harga"
+    t.integer "total_harga"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["menu_id"], name: "index_order_menus_on_menu_id"
@@ -44,10 +40,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_19_171008) do
   end
 
   create_table "orders", force: :cascade do |t|
-    t.string "email", null: false
-    t.string "status", default: "new", null: false
+    t.string "email"
+    t.string "status", default: "new"
+    t.integer "total_bayar", default: 0
+    t.datetime "order_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "menus", "kategoris"
 end

@@ -1,101 +1,71 @@
 class MenusController < ApplicationController
+    before_action :set_menu, only: [:show, :update, :destroy]
+
     def index
         render json: {
             message: "Menampilkan semua menu",
             menus: Menu.all
-        }
+        },
+        status: :ok
     end 
 
     def show
-        if Menu.exists?(params[:id]) then
-            menu = Menu.find(params[:id])
-
-            render json: {
-                message: "Menu ditemukan",
-                menu: menu,
-                kategoris: menu.kategori
-            }
-        else
-            render json: {
-                message: "Menu tidak ditemukan",
-            }
-        end
-    end 
+        menu_show(@menu, "Menu ditemukan")
+    end
 
     def create
-        menu = Menu.new(menu_params)
+        @menu = Menu.new(menu_params)
 
-        if menu.save            
-
-            if kategori_params.present? then
-                menu.kategori.destroy_all
-                kategori_params.each do |kategori|
-                    kategori = Kategori.find_or_create_by(nama: kategori)
-                    menu.kategori << kategori
-                end
-            end
-            
-            render json: {
-                message: "Menu berhasil ditambahkan",
-                menu: menu,
-                kategoris: menu.kategori
-            }
+        if @menu.save
+            menu_show(@menu, "Menu berhasil ditambahkan")
         else
-            render json: menu.errors, status: :unprocessable_entity
+            menu_error(@menu)
         end
     end 
 
     def update
-        if Menu.exists?(params[:id]) then
-            menu = Menu.find(params[:id])
-
-            if menu.update(menu_params)
-
-                if kategori_params.present? then
-                    menu.kategori.destroy_all
-                    kategori_params.each do |kategori|
-                        kategori = Kategori.find_or_create_by(nama: kategori)
-                        menu.kategori << kategori
-                    end
-                end
-
-                render json: {
-                    message: "Menu berhasil diperbarui",
-                    menu: menu,
-                    kategoris: menu.kategori
-                }
-            else
-                render json: menu.errors, status: :unprocessable_entity
-            end
+        if @menu.update(menu_params) then
+            menu_show(@menu, "Menu berhasil diupdate")
         else
-            render json: {
-                message: "Menu tidak ditemukan"
-            }
-        end    
+            menu_error(@menu)
+        end
     end 
 
     def destroy
-        if Menu.exists?(params[:id]) then
-            menu = Menu.find(params[:id])
-            menu.destroy
-            render json: {
-                message: "Menu berhasil dihapus",
-                menu: menu
-            }
+        if @menu.destroy
+            menu_show(@menu, "Menu berhasil dihapus")
         else
-            render json: {
-                message: "Menu tidak ditemukan",
-            }
+            menu_error(@menu)
         end
     end
 
     private
-    def menu_params
-        params.require(:menu).permit(:nama, :harga, :deskripsi)
+
+    def set_menu
+        begin
+            @menu = Menu.find(params[:id])
+        rescue ActiveRecord::RecordNotFound
+            render json: {
+                message: "Menu tidak ditemukan"
+            },
+            status: :not_found
+        end
     end
 
-    private
-    def kategori_params
-        params.require(:kategoris)
+    def menu_params
+        params.permit(:nama, :harga, :deskripsi, :kategori_id)
+    end
+
+    def menu_show(menu, message)
+        render json: {
+            message: message,
+            menu: menu,
+            kategoris: menu.kategori
+        },
+        status: :ok
+    end
+
+    def menu_error(menu)
+        render json: menu.errors, status: :unprocessable_entity
     end
 end

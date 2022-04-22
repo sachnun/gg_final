@@ -1,8 +1,10 @@
 class CreateOrders < ActiveRecord::Migration[7.0]
   def change
     create_table :orders do |t|
-      t.string :email, null: false
-      t.string :status, null: false, default: "new"
+      t.string :email
+      t.string :status, default: "new"
+      t.integer :total_bayar, default: 0
+      t.timestamp :order_at
 
       t.timestamps
     end

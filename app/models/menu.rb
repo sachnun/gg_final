@@ -1,8 +1,8 @@
 class Menu < ApplicationRecord
     validates :nama, presence: true, uniqueness: true
-    validates :harga, presence: true, numericality: { greater_than: 0.01 }
     validates :deskripsi, length: { maximum: 150 }
+    validates :harga, numericality: true
+    validates_numericality_of :harga, :greater_than => 0.01
 
-    has_many :menu_kategoris
-    has_many :kategori, through: :menu_kategoris
+    belongs_to :kategori
 end
