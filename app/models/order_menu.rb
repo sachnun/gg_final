@@ -1,7 +1,6 @@
 class OrderMenu < ApplicationRecord    
     validates :menu_id, presence: true
     validates :order_id, presence: true
-    validates :porsi, presence: true, numericality: true
     validates :porsi, numericality: { greater_than: 0 }
 
     belongs_to :order
