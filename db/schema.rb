@@ -43,7 +43,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_19_171008) do
     t.string "email"
     t.string "status", default: "new"
     t.integer "total_bayar", default: 0
-    t.datetime "order_at", precision: nil
+    t.datetime "order_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

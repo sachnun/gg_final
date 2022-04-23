@@ -117,4 +117,11 @@ next, sample url shortened path and parameters only.
 \
 **Unpaid Order**
 
-for order status below 5 pm today, it will automatically be changed to unpaid / canceled.
+for order status below 5 p.m today, it will automatically be changed to unpaid / canceled.
+\
+\
+or, you can use this to change the status semi-automatically.
+
+| Method  | URL Path             | Parameter                | Description                            |
+| ------- | -------------------- | ------------------------ | -------------------------------------- |
+| POST     | `/api/order/unpaid` | -                        | **unpaid all new order** under 5 p.m.  |

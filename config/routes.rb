@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     end
 
     post 'order/:id/paid', to: 'orders#paid'
+    post 'order/unpaid', to: 'orders#unpaid'
 
     get 'report', to: 'reports#index'
   end

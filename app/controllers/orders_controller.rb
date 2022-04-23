@@ -43,6 +43,25 @@ class OrdersController < ApplicationController
         @order.update(status: "paid")
         order_show(@order, "Order berhasil dibayar")
     end
+    
+    def unpaid
+        if Time.now.hour > 17
+            orders = Order.where(status: "new")
+            orders.each do |order|
+                order.update(status: "cancelled")
+            end
+            render json: {
+                message: "Order yang belum dibayar akan otomatis diubah menjadi canceled",
+                waktu: Time.now,
+                orders: orders
+            }
+        else
+            render json: {
+                message: "Waktu untuk membatalkan order belum tepat",
+                waktu: Time.now
+            }
+        end
+    end
 
     private
 
