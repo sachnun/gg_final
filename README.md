@@ -16,6 +16,12 @@ bundle install
 bundle exec rails db:migrate
 ```
 
+(optional) only use for dummy data
+
+```bash
+bulid exec rails db:seed
+```
+
 ## Run the server
 
 Run this command to your terminal:
@@ -79,7 +85,7 @@ next, sample url shortened path and parameters only.
 | GET     | `/api/order`         | -                        | list order        |
 | GET     | `/api/order/:id`     | -                        | detail order      |
 | POST    | `/api/order`         | <ul><li>email</li></ul>  | buat order        |
-| POST    | `/api/order/paid`    | -                        | paid order        |
+| POST    | `/api/order/:id/paid`| -                        | **paid order**    |
 | PATH    | `/api/order/:id`     | <ul><li>email</li></ul>  | ubah order        |
 | DELETE  | `/api/order/:id`     | -                        | hapus order       |
 
@@ -108,6 +114,7 @@ next, sample url shortened path and parameters only.
 | GET     | `/api/report?filter=harga`    | <ul><li>s = harga minimal</li><li>e = harga maksimal</li></ul>      | report by price   |
 | GET     | `/api/report?filter=email`    | <ul><li>q = email</li></ul>                                         | report by email   |
 
+\
 **Unpaid Order**
 
 for order status below 5 pm today, it will automatically be changed to unpaid / canceled.

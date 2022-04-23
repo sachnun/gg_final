@@ -6,10 +6,18 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 
-10.times do
+3.times do
     FactoryBot.create(:kategori)
 end
 
-3.times do
-    FactoryBot.create(:menu, kategori: Kategori.first)
+10.times do
+    FactoryBot.create(:menu, kategori: Kategori.order("RANDOM()").first)
+end
+
+5.times do
+    FactoryBot.create(:order)
+end
+
+20.times do
+    FactoryBot.create(:order_menu, order: Order.order("RANDOM()").first)
 end

@@ -1,6 +1,6 @@
 FactoryBot.define do
     factory :menu do
-        nama { Faker::Food.dish }
+        nama { Faker::Food.unique.dish }
         deskripsi { Faker::Food.description[0..149] }
         harga { Faker::Number.positive }
         kategori { Kategori.first || association(:kategori) }
