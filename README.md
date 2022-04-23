@@ -30,6 +30,10 @@ Run this command to your terminal:
 bundle exec rails s
 ```
 
+```bash
+bundle exec whenever --update-crontab
+```
+
 or, if you using replit just click run button.
 
 ## Testing
@@ -122,6 +126,6 @@ for order status below 5 p.m today, it will automatically be changed to unpaid /
 \
 or, you can use this to change the status semi-automatically.
 
-| Method  | URL Path             | Parameter                | Description                            |
-| ------- | -------------------- | ------------------------ | -------------------------------------- |
-| POST     | `/api/order/unpaid` | -                        | **unpaid all new order** under 5 p.m.  |
+| Method  | URL Path             | Parameter     | Description                            |
+| ------- | -------------------- | ------------- | -------------------------------------- |
+| POST     | `/api/order/unpaid` | -             | **unpaid all new order** under 5 p.m.  |
