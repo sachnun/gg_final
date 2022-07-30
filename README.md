@@ -100,11 +100,11 @@ next, sample url shortened path and parameters only.
 
 | Method  | URL Path                                | Parameter                                | Description            |
 | ------- | --------------------------------------- | ---------------------------------------- | ---------------------- |
-| GET     | `/api/menu/:order_id/menu`              | -                                        | list order menu        |
-| GET     | `/api/menu/:order_id/menu/:menu_id`     | -                                        | detail order menu      |
-| POST    | `/api/menu/:order_id/menu`              | <ul><li>menu_id</li><li>porsi</li></ul>  | buat order menu        |
-| PATH    | `/api/menu/:order_id/menu/:menu_id`     | <ul><li>menu_id</li><li>porsi</li></ul>  | ubah order menu        |
-| DELETE  | `/api/menu/:order_id/menu/:menu_id`     | -                                                                           | hapus order menu       |
+| GET     | `/api/order/:order_id/menu`              | -                                        | list order menu        |
+| GET     | `/api/order/:order_id/menu/:menu_id`     | -                                        | detail order menu      |
+| POST    | `/api/order/:order_id/menu`              | <ul><li>menu_id</li><li>porsi</li></ul>  | buat order menu        |
+| PATH    | `/api/order/:order_id/menu/:menu_id`     | <ul><li>menu_id</li><li>porsi</li></ul>  | ubah order menu        |
+| DELETE  | `/api/order/:order_id/menu/:menu_id`     | -                                                                           | hapus order menu       |
 
 
 \
